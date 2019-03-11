@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codingforhappy.dao.sql.PassengersDao">
+    <resultMap id = "result" type = "com.codingforhappy.model.Passenger">
+        <result property = "id" column = "id"/>
+        <result property = "phonenum" column = "phonenum"/>
+        <result property = "password" column = "password"/>
+        <result property = "token" column = "token"/>
+    </resultMap>
+
+    <resultMap id="Info" type="com.codingforhappy.model.PassengerInfo">
+        <result property="phoneNumber" column="phonenum" />
+        <result property="nickName" column="nickname" />
+    </resultMap>
+
+<!--TODO change field-->
+    <select id = "getById" parameterType = "int" resultMap = "result">
+        SELECT * FROM didi.passengers WHERE id = #{userId};
+    </select>
+
+    <select id="verifyLoginByPassword" parameterType="java.util.Map" resultType="int">
+        SELECT count(*) FROM didi.passengers WHERE phonenum = #{phonenum} AND password = #{password};
+    </select>
+
+    <update id="updateToken" parameterType="java.util.Map">
+        UPDATE didi.passengers SET TOKEN = #{token} WHERE phonenum = #{phonenum};
+    </update>
+
+    <select id="countByPhoneNumber" parameterType="String" resultType="int">
+        SELECT count(*) FROM didi.passengers WHERE phonenum = #{phonenum};
+    </select>
+
+    <select id="getTokenByPhoneNumber" parameterType="String" resultType="String">
+        SELECT token FROM didi.passengers WHERE phonenum = #{phonenum};
+    </select>
+
+    <select id="getInfoByPhoneNumber" parameterType="String" resultMap="Info">
+        SELECT phonenum, nickname FROM didi.passengers WHERE phonenum = #{phonenum};
+    </select>
+
+</mapper>
